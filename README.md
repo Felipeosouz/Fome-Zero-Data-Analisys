@@ -26,7 +26,7 @@ Durante o desenvolvimento deste projeto, as seguintes perguntas foram respondida
 - **Python:** Utilizado para a manipulação e análise dos dados.
 - **Pandas:** Biblioteca principal para análise e manipulação dos dados.
 - **Streamlit:** Utilizado para a criação do dashboard final e visualização dos resultados.
-- **Jupyter Lab:** Ambiente de desenvolvimento utilizado para o tratamento inicial dos dados.
+- **VS Code:** Ambiente de desenvolvimento utilizado para o tratamento inicial dos dados.
 - **Git/GitHub:** Controle de versão e compartilhamento do projeto.
 
 ## Estrutura do Projeto

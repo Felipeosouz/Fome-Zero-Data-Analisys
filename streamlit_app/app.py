@@ -1,8 +1,5 @@
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-
-df = pd.read_csv("./data/df_tratado.csv")
+st.set_page_config(layout="wide")
 
 # Navigation
 home_page = st.Page("home.py", title="Home")

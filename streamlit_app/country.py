@@ -1,7 +1,9 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-from app import df
+import pandas as pd
+
+df = pd.read_csv("./data/df_tratado.csv")
 
 st.title("Análise por país")
 
@@ -9,7 +11,7 @@ st.subheader("País com mais cidades registradas")
 country_with_most_cities = df['Country'].value_counts().idxmax()
 st.write(f"O país com mais cidades registradas é {country_with_most_cities}.")
 
-
+# with st.container():
 top_10_countries = df.groupby('Country')['City'].nunique().nlargest(10).reset_index()
 top_10_countries.columns = ['Country', 'Number of Cities']
 
@@ -21,12 +23,13 @@ fig = px.bar(top_10_countries, x='Country', y='Number of Cities',
 
 # Configurar o layout do gráfico
 fig.update_traces(texttemplate='%{text}', textposition='outside',
-                  marker=dict(color="#0688aa", line=dict(color='black', width=0.5)),
-                  width=0.8)
-fig.update_layout(xaxis_title='Country',
-                    yaxis_title='Number of Cities',
-                    xaxis_tickangle=-45,
-                    height=600)
+                marker=dict(color="#0688aa", line=dict(color='black', width=0.5)),
+                width=0.8)
+fig.update_layout(xaxis_title='Países',
+                    yaxis_title='Número de cidades',
+                    xaxis_tickangle=0,
+                    height=550,
+                    width=1200)
 
 st.plotly_chart(fig)
 

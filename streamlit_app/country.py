@@ -1,50 +1,63 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 import plotly.express as px
 import pandas as pd
 
 df = pd.read_csv("./data/df_tratado.csv")
 
-st.title("Análise por país")
+st.title("Análise de restaurantes por país")
 
-st.subheader("País com mais cidades registradas")
-country_with_most_cities = df['Country'].value_counts().idxmax()
-st.write(f"O país com mais cidades registradas é {country_with_most_cities}.")
+# Filtros
+st.sidebar.header("Filtros")
+countries = ["Todos os países"] + df["Country"].unique().tolist()
+selected_country = st.sidebar.selectbox("Selecione o País", countries)
 
-# with st.container():
-top_10_countries = df.groupby('Country')['City'].nunique().nlargest(10).reset_index()
-top_10_countries.columns = ['Country', 'Number of Cities']
+if selected_country == "Todos os países":
+    df_country = df
+else:
+    df_country = df[df["Country"] == selected_country]
 
-# Criar o gráfico com plotly
-fig = px.bar(top_10_countries, x='Country', y='Number of Cities',
-                title='Top 10 Countries by Number of Cities',
-                labels={'Country': 'Country', 'Number of Cities': 'Number of Cities'},
-                text='Number of Cities')
+st.subheader(f"{selected_country}")
 
-# Configurar o layout do gráfico
-fig.update_traces(texttemplate='%{text}', textposition='outside',
-                marker=dict(color="#0688aa", line=dict(color='black', width=0.5)),
-                width=0.8)
-fig.update_layout(xaxis_title='Países',
-                    yaxis_title='Número de cidades',
-                    xaxis_tickangle=0,
-                    height=550,
-                    width=1200)
+# Métricas
+st.subheader("Métricas Resumidas")
 
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Número de Cidades", df_country["City"].nunique())
+col2.metric("Número de Restaurantes", df_country["Restaurant ID"].nunique())
+col3.metric("Avaliação Média", round(df_country["Aggregate rating"].mean(), 2))
+col4.metric("Preço Médio para Dois (USD)", round(df_country["Average Cost for two usd"].mean(), 2))
+
+# Gráfico de barras
+st.subheader("Distribuição de Restaurantes por País")
+country_count = df["Country"].value_counts().reset_index()
+country_count.columns = ["Country", "Count"]
+
+fig = px.bar(country_count.head(10), x="Country", y="Count", title="Top 10 Países com Mais Restaurantes",
+             labels={"Country": "País", "Count": "Número de Restaurantes"},
+             color_discrete_sequence=["#636EFA"])
+
+fig.update_traces(text=country_count.head(10)["Count"], textposition="outside")
+
+fig.update_layout(height=500, width=800)
 st.plotly_chart(fig)
 
-# st.text(f"{pais_mais_cidades} , {num_cidades_pais}")
+# Gráfico de dispersão
+st.subheader("Avaliação Média vs Preço Médio por País")
+country_summary = df.groupby("Country").agg({
+    "Average Cost for two usd": "mean",
+    "Aggregate rating": "mean",
+    "Votes": "sum"
+}).reset_index()
+
+fig2 = px.scatter(country_summary, x="Average Cost for two usd", y="Aggregate rating",
+                  size="Votes", color="Country",
+                  hover_name="Country", title="Avaliação vs. Preço Médio por País",
+                  labels={"Average Cost for two usd": "Preço Médio para Dois (USD)",
+                          "Aggregate rating": "Avaliação Média"},
+                          size_max=50)
+
+fig2.update_layout(height=500, width=800)
+st.plotly_chart(fig2)
 
 
-# st.header("Distribuição de restaurantes por tipo de culinária")
 
-# cuisine_counts = df_filtered["Cuisines"].value_counts()
-
-# plt.figure(figsize=(10,5))
-# df_filtered["Cuisines"].value_counts().nlargest(10).plot(kind="bar")
-# plt.xticks(rotation=45, ha="right")
-# plt.xlabel("Tipo de culinária")
-# plt.ylabel("Número de restaurantes")
-# plt.title(f"Distribuição de Restaurantes por Tipo de Culinária (Filtros aplicados)")
-
-# st.pyplot(plt)

@@ -13,8 +13,10 @@ total_avaliacoes = df['Votes'].sum()
 num_culinarias = df['Cuisines'].nunique()
 
 st.title("Fome Zero Data Analisys")
+st.subheader("Descrição")
+st.markdown("A Fome Zero conecta clientes e restaurantes, oferecendo um espaço onde os restaurantes podem se cadastrar e exibir informações relevantes, como tipo de culinária, possibilidade de reservas, serviço de entrega, avaliações, entre outros. A análise visa identificar pontos-chave para auxiliar na tomada de decisões estratégicas.")
 st.title("Overral Metrics")
-tab1, tab2 = st.tabs(["Visão Gerencial", " "])
+tab1, tab2 = st.tabs(["Visão Geral", " "])
 
 with tab1:
     with st.container():
@@ -33,6 +35,7 @@ with tab1:
 
 
 with st.container():
+    st.subheader("Restaurant Location Map")
     df_map = df.loc[:,['Restaurant ID','Restaurant Name','City','Longitude','Latitude','Price range','Aggregate rating','Rating color']]
     map_ = folium.Map(location=[0, 0], zoom_start=3, tiles="Cartodb Positron")
 
@@ -51,4 +54,4 @@ with st.container():
             icon=folium.Icon(color=df_map.loc[i,'Rating color'], icon='home'),
         ).add_to(marker_cluster)
 
-    folium_static(map_, width=1000, height=800)
+    folium_static(map_, width=1100, height=800)

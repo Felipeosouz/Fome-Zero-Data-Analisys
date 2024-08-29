@@ -22,13 +22,15 @@ else:
 
 # Métricas
 st.subheader(f"{selected_country}")
-st.subheader("Métricas Resumidas")
+st.title("Overral Metrics")
+tab1, tab2 = st.tabs(["Visão Geral", " "])
 
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Número de Cidades", df_country["City"].nunique())
-col2.metric("Número de Restaurantes", df_country["Restaurant ID"].nunique())
-col3.metric("Avaliação Média", round(df_country["Aggregate rating"].mean(), 2))
-col4.metric("Preço Médio para Dois (USD)", round(df_country["Average Cost for two usd"].mean(), 2))
+with tab1:
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Número de Cidades", df_country["City"].nunique())
+    col2.metric("Número de Restaurantes", df_country["Restaurant ID"].nunique())
+    col3.metric("Avaliação Média", round(df_country["Aggregate rating"].mean(), 2))
+    col4.metric("Preço Médio para Dois (USD)", round(df_country["Average Cost for two usd"].mean(), 2))
 
 # Gráfico de barras
 st.subheader("Distribuição de Restaurantes por País")
@@ -60,7 +62,7 @@ with col5:
                             "Aggregate rating": "Avaliação Média"},
                             size_max=50)
 
-    fig2.update_layout(height=500, width=600)
+    fig2.update_layout(height=500, width=800)
     st.plotly_chart(fig2)
 
 #Gráfico de pizza
@@ -76,6 +78,12 @@ with col6:
 
     # Exibindo o gráfico
     st.plotly_chart(fig, use_container_width=True)
+
+st.subheader("Observações importantes")
+st.markdown("O país com mais restaurantes registrados é India, com 2480 restaurantes registrados.")
+st.markdown("O país com mais restaurantes com o nível de preço gourmet é United States of America, com 415 restaurantes registrados.")
+st.markdown("O país com a maior quantidade de restaurantes que fazem entrega é India, com 2177 restaurantes que fazem entrega.")
+st.markdown("O país com a maior quantidade de restaurantes que aceitam reservas é India, com 2855 restaurantes que aceitam reservas.")
 
 
 

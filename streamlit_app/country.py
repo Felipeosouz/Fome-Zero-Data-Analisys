@@ -6,8 +6,12 @@ df = pd.read_csv("./data/df_tratado.csv")
 
 st.title("Análise de restaurantes por país")
 
+
 # Filtros
 st.sidebar.header("Filtros")
+
+df = pd.read_csv("./data/df_tratado.csv")
+
 countries = ["Todos os países"] + df["Country"].unique().tolist()
 selected_country = st.sidebar.selectbox("Selecione o País", countries)
 
@@ -16,9 +20,8 @@ if selected_country == "Todos os países":
 else:
     df_country = df[df["Country"] == selected_country]
 
-st.subheader(f"{selected_country}")
-
 # Métricas
+st.subheader(f"{selected_country}")
 st.subheader("Métricas Resumidas")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -37,27 +40,42 @@ fig = px.bar(country_count.head(10), x="Country", y="Count", title="Top 10 País
              color_discrete_sequence=["#636EFA"])
 
 fig.update_traces(text=country_count.head(10)["Count"], textposition="outside")
-
-fig.update_layout(height=500, width=800)
+fig.update_layout(height=500, width=1000)
 st.plotly_chart(fig)
 
 # Gráfico de dispersão
-st.subheader("Avaliação Média vs Preço Médio por País")
-country_summary = df.groupby("Country").agg({
-    "Average Cost for two usd": "mean",
-    "Aggregate rating": "mean",
-    "Votes": "sum"
-}).reset_index()
+col5, col6 = st.columns(2)
+with col5:
+    st.subheader("Avaliação Média vs Preço Médio por País")
+    country_summary = df.groupby("Country").agg({
+        "Average Cost for two usd": "mean",
+        "Aggregate rating": "mean",
+        "Votes": "sum"
+    }).reset_index()
 
-fig2 = px.scatter(country_summary, x="Average Cost for two usd", y="Aggregate rating",
-                  size="Votes", color="Country",
-                  hover_name="Country", title="Avaliação vs. Preço Médio por País",
-                  labels={"Average Cost for two usd": "Preço Médio para Dois (USD)",
-                          "Aggregate rating": "Avaliação Média"},
-                          size_max=50)
+    fig2 = px.scatter(country_summary, x="Average Cost for two usd", y="Aggregate rating",
+                    size="Votes", color="Country",
+                    hover_name="Country", title="Avaliação vs Preço Médio por País",
+                    labels={"Average Cost for two usd": "Preço Médio para Dois (USD)",
+                            "Aggregate rating": "Avaliação Média"},
+                            size_max=50)
 
-fig2.update_layout(height=500, width=800)
-st.plotly_chart(fig2)
+    fig2.update_layout(height=500, width=600)
+    st.plotly_chart(fig2)
+
+#Gráfico de pizza
+with col6:
+    st.subheader("Proporção de Cidades por País")
+    df_grouped = df.groupby('Country')['City'].nunique().reset_index()
+
+    fig = px.pie(df_grouped, 
+                values='City', 
+                names='Country', 
+                title='Proporção de Cidades por País',
+                hole=0.3)
+
+    # Exibindo o gráfico
+    st.plotly_chart(fig, use_container_width=True)
 
 
 

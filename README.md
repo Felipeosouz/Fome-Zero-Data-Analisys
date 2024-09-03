@@ -30,6 +30,10 @@ Durante o desenvolvimento deste projeto, as seguintes perguntas foram respondida
 - **VS Code:** Ambiente de desenvolvimento utilizado para o tratamento inicial dos dados.
 - **Git/GitHub:** Controle de versão e compartilhamento do projeto.
 
+## Visualização no Streamlit
+
+Para visualizar o dashboard no streamlit, acesse o link: https://fomezero-felipeosouz.streamlit.app
+
 ## Estrutura do Projeto
 
 ```markdown

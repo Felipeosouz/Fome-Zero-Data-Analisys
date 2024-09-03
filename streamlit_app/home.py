@@ -55,3 +55,14 @@ with st.container():
         ).add_to(marker_cluster)
 
     folium_static(map_, width=1100, height=800)
+
+
+
+csv = df.to_csv(index=False)
+
+st.sidebar.download_button(
+    label="Download Dataframe",
+    data=csv,
+    file_name="dataset_tratado.csv",
+    mime="text/csv"
+)

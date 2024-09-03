@@ -65,9 +65,26 @@ fig2 = px.pie(top_10_cuisines,
 st.plotly_chart(fig2)
 
 st.subheader("Observações importantes")
-st.markdown("A culinária com maior custo é Continental, com uma nota média de 755.00 dólares.")
-st.markdown("A culinária com maior nota é Japanese, com uma nota média de 4.90.")
-st.markdown("O tipo de culinária que possui mais restaurantes que aceitam pedidos online e fazem entregas é 'North Indian', com 317 restaurantes.")
+
+culinaria_maior_custo = df.loc[df['Average Cost for two usd'].idxmax(), 'Cuisines']
+maior_custo = df["Average Cost for two usd"].max()
+
+st.markdown(f"A culinária com maior custo é {culinaria_maior_custo}, com uma nota média de {maior_custo:.2f} dólares.")
+
+culinaria_maior_nota = df.loc[df['Aggregate rating'].idxmax(), 'Cuisines']
+maior_nota = df["Aggregate rating"].max()
+
+st.markdown(f"A culinária com maior nota é {culinaria_maior_nota}, com uma nota média de {maior_nota:.2f}.")
+
+restaurantes_online_entregas = df[(df['Has Online delivery'] == 1) & (df['Is delivering now'] == 1)]
+
+culinarias_count = restaurantes_online_entregas['Cuisines'].value_counts()
+
+tipo_culinaria_mais_restaurantes = culinarias_count.idxmax()
+numero_restaurantes = culinarias_count.max()
+
+st.markdown(f"O tipo de culinária que possui mais restaurantes que aceitam pedidos online e fazem entregas é '{tipo_culinaria_mais_restaurantes}', com {numero_restaurantes} restaurantes.")
+
 
 
 

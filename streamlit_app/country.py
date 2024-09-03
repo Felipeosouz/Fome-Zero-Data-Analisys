@@ -80,10 +80,23 @@ with col6:
     st.plotly_chart(fig, use_container_width=True)
 
 st.subheader("Observações importantes")
-st.markdown("O país com mais restaurantes registrados é India, com 2480 restaurantes registrados.")
-st.markdown("O país com mais restaurantes com o nível de preço gourmet é United States of America, com 415 restaurantes registrados.")
-st.markdown("O país com a maior quantidade de restaurantes que fazem entrega é India, com 2177 restaurantes que fazem entrega.")
-st.markdown("O país com a maior quantidade de restaurantes que aceitam reservas é India, com 2855 restaurantes que aceitam reservas.")
+pais_mais_restaurantes = df.groupby('Country')['Restaurant Name'].nunique().idxmax()
+num_restaurantes_pais = df.groupby('Country')['Restaurant Name'].nunique().max()
+st.markdown(f"O país com mais restaurantes registrados é {pais_mais_restaurantes}, com {num_restaurantes_pais} restaurantes registrados.")
+
+df_gourmet = df[df['Price range'] == 'gourmet']
+pais_mais_gourmet = df_gourmet['Country'].value_counts().idxmax()
+num_gourmet = df_gourmet['Country'].value_counts().max()
+st.markdown(f"O país com mais restaurantes com o nível de preço gourmet é {pais_mais_gourmet}, com {num_gourmet} restaurantes registrados.")
+
+pais_mais_restaurantes_entrega = df[df['Has Online delivery'] == 1]['Country'].value_counts().idxmax()
+num_entregas = df[df['Has Online delivery'] == 1]['Country'].value_counts().max()
+st.markdown(f"O país com a maior quantidade de restaurantes que fazem entrega é {pais_mais_restaurantes_entrega}, com {num_entregas} restaurantes que fazem entrega.")
+
+pais_mais_reservas = df[df['Has Table booking'] == 1]['Country'].value_counts().idxmax()
+num_reservas = df[df['Has Table booking'] == 1]['Country'].value_counts().max()
+st.markdown(f"O país com a maior quantidade de restaurantes que aceitam reservas é {pais_mais_reservas}, com {num_reservas} restaurantes que aceitam reservas.")
+
 
 
 

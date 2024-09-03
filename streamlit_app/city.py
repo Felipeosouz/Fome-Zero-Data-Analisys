@@ -70,7 +70,23 @@ fig_dispersao = px.scatter(df_city_ratings,
 st.plotly_chart(fig_dispersao, use_container_width=True)
 
 st.subheader("Observações importantes")
-st.markdown("A cidade com mais restaurantes com nota média acima de 4 é Bangalore, com 79 restaurantes.")
-st.markdown("A cidade com mais restaurantes com nota média abaixo de 2.5 é Gangtok, com 33 restaurantes.")
-st.markdown("A cidade com o maior valor médio de um prato para dois é Pasay City, com uma média de 300.00 dolares.")
-st.markdown("A cidade com a maior quantidade de tipos de culinária distintos é Birmingham, com 32 tipos distintos de culinária.")
+
+restaurantes_mais_4 = df[df['Aggregate rating'] > 4]
+
+cidade_mais_4 = restaurantes_mais_4['City'].value_counts().idxmax()
+num_mais_4 = restaurantes_mais_4['City'].value_counts().max()
+st.markdown(f"A cidade com mais restaurantes com nota média acima de 4 é {cidade_mais_4}, com {num_mais_4} restaurantes.")
+
+restaurantes_menos_2_5 = df[df['Aggregate rating'] < 2.5]
+
+cidade_menos_2_5 = restaurantes_menos_2_5['City'].value_counts().idxmax()
+num_menos_2_5 = restaurantes_menos_2_5['City'].value_counts().max()
+st.markdown(f"A cidade com mais restaurantes com nota média abaixo de 2.5 é {cidade_menos_2_5}, com {num_menos_2_5} restaurantes.")
+
+cidade_mais_preco = df.groupby('City')['Average Cost for two usd'].mean().idxmax()
+maior_preco = df.groupby('City')['Average Cost for two usd'].mean().max()
+st.markdown(f"A cidade com o maior valor médio de um prato para dois é {cidade_mais_preco}, com uma média de {maior_preco:.2f} dolares.")
+
+cidade_mais_culinarias = df.groupby('City')['Cuisines'].nunique().idxmax()
+max_culinarias = df.groupby('City')['Cuisines'].nunique().max()
+st.markdown(f"A cidade com a maior quantidade de tipos de culinária distintos é {cidade_mais_culinarias}, com {max_culinarias} tipos distintos de culinária.")

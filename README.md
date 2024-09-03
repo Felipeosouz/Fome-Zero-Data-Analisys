@@ -25,6 +25,7 @@ Durante o desenvolvimento deste projeto, as seguintes perguntas foram respondida
 
 - **Python:** Utilizado para a manipulação e análise dos dados.
 - **Pandas:** Biblioteca principal para análise e manipulação dos dados.
+- **Plotly:** Biblioteca para visualizações interativas e gráficos avançados.
 - **Streamlit:** Utilizado para a criação do dashboard final e visualização dos resultados.
 - **VS Code:** Ambiente de desenvolvimento utilizado para o tratamento inicial dos dados.
 - **Git/GitHub:** Controle de versão e compartilhamento do projeto.
@@ -32,8 +33,7 @@ Durante o desenvolvimento deste projeto, as seguintes perguntas foram respondida
 ## Estrutura do Projeto
 
 ```markdown
-├── data/                     # Arquivos de dados (não incluídos no repositório)
+├── data/                     # Arquivos de dados
 ├── notebooks/                # Notebooks Jupyter para análise e desenvolvimento inicial
-├── scripts/                  # Scripts Python para manipulação de dados
 ├── streamlit_app/            # Código para aplicação Streamlit
 ├── README.md                 # Documentação do projeto
